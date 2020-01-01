@@ -199,3 +199,5 @@
 {"message":"Invalid url 'htp://invalid-url' supplied","level":"error"}
 {"message":"Unauthorized request to path: /bookmarks","level":"error"}
 {"message":"Bookmark with id 0c70e891-40ab-460a-8a27-6148fba15fd6 created","level":"info"}
+{"message":"Unauthorized request to path: /","level":"error"}
+{"message":"Unauthorized request to path: /","level":"error"}
