@@ -17,7 +17,7 @@ const serializeBookmark = bookmark => ({
 })
 
 bookmarkRouter
-    .route('/bookmarks')
+    .route('/api/bookmarks')
     .get((req, res, next) => {
         BookmarkService.getAllBookmarks(req.app.get('db'))
         .then(bookmarks => {
@@ -69,7 +69,7 @@ bookmarkRouter
     })
 
 bookmarkRouter
-  .route('/bookmarks/:bookmark_id')
+  .route('/api/bookmarks/:bookmark_id')
   .all((req, res, next) => {
     BookmarkService.getById(
     req.app.get('db'),
@@ -100,5 +100,28 @@ bookmarkRouter
         })
         .catch(next)
   })
+  .patch(jsonParser, (req, res, next) => {
+    const { title, url, description, rating } = req.body
+    const bookmarkToUpdate = { title, url, description, rating }
+    
+    const numberOfValues = Object.values(articleToUpdate).filter(Boolean).length
+    if (numberOfValues === 0) {
+        return res.status(400).json({
+            error: {
+                message: `Request body must contain either title, url, description, of rating`
+            }
+        })
+    }
+    
+    BookmarkService.updateBookmark(
+        req.app.get('db'),
+        req.params.bookmark_id,
+        bookmarkToUpdate
+    )
+        .then(numRowsAffected => {
+            res.status(204).end()
+        })
+        .catch(next)
+})
 
 module.exports = bookmarkRouter
